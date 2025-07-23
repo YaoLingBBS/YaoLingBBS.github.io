@@ -3,11 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>妖精论坛 - 登录注册</title>
+    <title>妖精论坛</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- 引入Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
     <style>
         * {
             margin: 0;
@@ -39,17 +36,10 @@
             z-index: -1;
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        
         .header {
             text-align: center;
             padding: 30px 20px;
+            margin-bottom: 30px;
             position: relative;
             animation: glow 3s infinite alternate;
         }
@@ -87,12 +77,17 @@
             text-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
         }
         
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
         .nav {
             background: rgba(26, 35, 43, 0.8);
             backdrop-filter: blur(10px);
             border-radius: 15px;
             padding: 15px;
-            margin: 20px 0;
+            margin-bottom: 30px;
             display: flex;
             justify-content: center;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -123,178 +118,148 @@
             box-shadow: 0 5px 15px rgba(46, 204, 113, 0.2);
         }
         
-        .auth-container {
+        .forum-container {
             display: flex;
-            gap: 40px;
-            margin: 40px 0;
+            gap: 30px;
             flex-wrap: wrap;
-            justify-content: center;
         }
         
-        .auth-form {
+        .main-content {
+            flex: 3;
+            min-width: 300px;
+        }
+        
+        .sidebar {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        .section {
             background: rgba(26, 35, 43, 0.7);
             backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            width: 100%;
-            max-width: 500px;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
             border: 1px solid rgba(155, 89, 182, 0.3);
             transition: transform 0.3s ease;
         }
         
-        .auth-form:hover {
+        .section:hover {
             transform: translateY(-5px);
         }
         
-        .auth-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .auth-header h2 {
-            font-size: 2.2rem;
+        .section h2 {
             color: #7ef9ff;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(46, 204, 113, 0.5);
             display: flex;
             align-items: center;
-            justify-content: center;
         }
         
-        .auth-header h2 i {
-            margin-right: 12px;
+        .section h2 i {
+            margin-right: 10px;
             color: #9b59b6;
         }
         
-        .auth-header p {
-            font-size: 1.1rem;
-            opacity: 0.8;
+        .forum-list {
+            list-style: none;
         }
         
-        .form-group {
-            margin-bottom: 25px;
-            position: relative;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #a3e4d7;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 15px;
+        .forum-item {
             background: rgba(40, 55, 71, 0.6);
-            border: 2px solid rgba(155, 89, 182, 0.4);
             border-radius: 10px;
-            color: #e0f7fa;
-            font-size: 1.1rem;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
             transition: all 0.3s ease;
+            border-left: 4px solid #9b59b6;
         }
         
-        .form-group input:focus {
-            outline: none;
-            border-color: #2ecc71;
-            box-shadow: 0 0 10px rgba(46, 204, 113, 0.4);
-        }
-        
-        .btn {
-            display: inline-block;
-            background: linear-gradient(to right, #9b59b6, #3498db);
-            color: white;
-            padding: 15px 30px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 10px;
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 5px 15px rgba(155, 89, 182, 0.4);
-            font-size: 1.1rem;
-            width: 100%;
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(155, 89, 182, 0.6);
-        }
-        
-        .btn-secondary {
-            background: rgba(52, 73, 94, 0.6);
-            margin-top: 15px;
-        }
-        
-        .btn-secondary:hover {
+        .forum-item:hover {
             background: rgba(52, 73, 94, 0.8);
+            transform: translateX(5px);
+            border-left: 4px solid #2ecc71;
         }
         
-        .form-footer {
-            text-align: center;
-            margin-top: 25px;
-            font-size: 1rem;
+        .forum-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #9b59b6 0%, #3498db 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            font-size: 1.8rem;
         }
         
-        .form-footer a {
+        .forum-info {
+            flex: 1;
+        }
+        
+        .forum-title {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
             color: #7ef9ff;
-            text-decoration: none;
-            transition: all 0.3s ease;
         }
         
-        .form-footer a:hover {
-            text-decoration: underline;
-            color: #2ecc71;
+        .forum-desc {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            margin-bottom: 8px;
         }
         
-        .user-info {
-            background: rgba(26, 35, 43, 0.7);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            width: 100%;
-            max-width: 500px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(46, 204, 113, 0.3);
+        .forum-stats {
+            display: flex;
+            font-size: 0.85rem;
+            opacity: 0.7;
+        }
+        
+        .forum-stats span {
+            margin-right: 15px;
+        }
+        
+        .user-card {
             text-align: center;
-            display: none;
-        }
-        
-        .user-info.active {
-            display: block;
+            padding: 25px 20px;
         }
         
         .avatar {
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
-            margin: 0 auto 20px;
+            margin: 0 auto 15px;
             border: 3px solid #9b59b6;
-            box-shadow: 0 0 25px rgba(155, 89, 182, 0.5);
+            box-shadow: 0 0 20px rgba(155, 89, 182, 0.5);
             background: linear-gradient(135deg, #1abc9c 0%, #3498db 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
+            font-size: 2.5rem;
         }
         
         .username {
-            font-size: 1.8rem;
+            font-size: 1.4rem;
             margin-bottom: 10px;
             color: #7ef9ff;
         }
         
-        .user-email {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            margin-bottom: 25px;
+        .user-title {
+            background: rgba(46, 204, 113, 0.2);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
         }
         
-        .user-stats {
+        .stats {
             display: flex;
             justify-content: space-around;
-            margin: 30px 0;
+            margin: 25px 0;
         }
         
         .stat {
@@ -308,34 +273,42 @@
         }
         
         .stat-label {
-            font-size: 1rem;
-            opacity: 0.8;
+            font-size: 0.85rem;
+            opacity: 0.7;
         }
         
-        .message {
-            padding: 15px;
-            border-radius: 10px;
-            margin: 20px 0;
-            text-align: center;
-            display: none;
+        .online-users {
+            padding: 20px;
         }
         
-        .success {
-            background: rgba(46, 204, 113, 0.2);
-            border: 1px solid #2ecc71;
-            color: #2ecc71;
+        .users-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
         }
         
-        .error {
-            background: rgba(231, 76, 60, 0.2);
-            border: 1px solid #e74c3c;
-            color: #e74c3c;
+        .user {
+            display: flex;
+            align-items: center;
+            background: rgba(52, 152, 219, 0.15);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .user-dot {
+            width: 10px;
+            height: 10px;
+            background: #2ecc71;
+            border-radius: 50%;
+            margin-right: 8px;
         }
         
         .footer {
             text-align: center;
             padding: 30px;
-            margin-top: auto;
+            margin-top: 30px;
             font-size: 0.9rem;
             opacity: 0.7;
         }
@@ -365,6 +338,26 @@
             left: 15%;
             font-size: 5rem;
             animation: float 10s infinite ease-in-out;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(to right, #9b59b6, #3498db);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(155, 89, 182, 0.4);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(155, 89, 182, 0.6);
         }
         
         @keyframes glow {
@@ -398,14 +391,8 @@
                 padding: 8px 15px;
             }
             
-            .auth-container {
+            .forum-container {
                 flex-direction: column;
-                align-items: center;
-            }
-            
-            .auth-form, .user-info {
-                width: 100%;
-                padding: 30px 20px;
             }
         }
     </style>
@@ -420,125 +407,19 @@
         <header class="header">
             <h1>妖精论坛</h1>
             <p class="subtitle">欢迎来到神秘的妖精世界！在这里，你可以与森林精灵、月光仙子和其他魔法生物交流魔法心得、分享自然奥秘。</p>
+            <a href="#" class="btn">加入论坛 <i class="fas fa-feather-alt"></i></a>
         </header>
         
         <nav class="nav">
             <a href="#"><i class="fas fa-home"></i> 首页</a>
-            <a href="#"><i class="fas fa-comments"></i> 论坛</a>
+            <a href="#"><i class="fas fa-comments"></i> 最新帖子</a>
             <a href="#"><i class="fas fa-fire"></i> 热门话题</a>
-            <a href="#"><i class="fas fa-user-friends"></i> 社区</a>
-            <a href="#"><i class="fas fa-info-circle"></i> 关于</a>
+            <a href="#"><i class="fas fa-search"></i> 搜索</a>
+            <a href="#"><i class="fas fa-user-friends"></i> 成员</a>
+            <a href="#"><i class="fas fa-cog"></i> 设置</a>
         </nav>
         
-        <!-- 消息容器 -->
-        <div id="message" class="message"></div>
-        
-        <div class="auth-container">
-            <!-- 登录表单 -->
-            <div id="login-form" class="auth-form">
-                <div class="auth-header">
-                    <h2><i class="fas fa-key"></i> 登录魔法论坛</h2>
-                    <p>使用你的邮箱和密码进入妖精世界</p>
-                </div>
-                
-                <div class="form-group">
-                    <label for="login-email"><i class="fas fa-envelope"></i> 邮箱地址</label>
-                    <input type="email" id="login-email" placeholder="your@email.com" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="login-password"><i class="fas fa-lock"></i> 密码</label>
-                    <input type="password" id="login-password" placeholder="••••••••" required>
-                </div>
-                
-                <button id="login-btn" class="btn">进入魔法世界 <i class="fas fa-feather-alt"></i></button>
-                
-                <div class="form-footer">
-                    <p>还没有账号？ <a href="#" id="show-register">创建新账号</a></p>
-                    <p><a href="#" id="show-forgot">忘记密码？</a></p>
-                </div>
-            </div>
-            
-            <!-- 注册表单 -->
-            <div id="register-form" class="auth-form" style="display:none">
-                <div class="auth-header">
-                    <h2><i class="fas fa-user-plus"></i> 创建新账号</h2>
-                    <p>加入我们的魔法社区</p>
-                </div>
-                
-                <div class="form-group">
-                    <label for="register-username"><i class="fas fa-user"></i> 妖精名称</label>
-                    <input type="text" id="register-username" placeholder="例如: 月光小仙子" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="register-email"><i class="fas fa-envelope"></i> 邮箱地址</label>
-                    <input type="email" id="register-email" placeholder="your@email.com" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="register-password"><i class="fas fa-lock"></i> 密码</label>
-                    <input type="password" id="register-password" placeholder="••••••••" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="register-confirm"><i class="fas fa-lock"></i> 确认密码</label>
-                    <input type="password" id="register-confirm" placeholder="••••••••" required>
-                </div>
-                
-                <button id="register-btn" class="btn">注册账号 <i class="fas fa-magic"></i></button>
-                
-                <div class="form-footer">
-                    <p>已有账号？ <a href="#" id="show-login">立即登录</a></p>
-                </div>
-            </div>
-            
-            <!-- 忘记密码表单 -->
-            <div id="forgot-form" class="auth-form" style="display:none">
-                <div class="auth-header">
-                    <h2><i class="fas fa-unlock-alt"></i> 重置密码</h2>
-                    <p>我们将发送重置链接到你的邮箱</p>
-                </div>
-                
-                <div class="form-group">
-                    <label for="forgot-email"><i class="fas fa-envelope"></i> 邮箱地址</label>
-                    <input type="email" id="forgot-email" placeholder="your@email.com" required>
-                </div>
-                
-                <button id="reset-btn" class="btn">发送重置链接 <i class="fas fa-paper-plane"></i></button>
-                
-                <div class="form-footer">
-                    <p><a href="#" id="show-login-from-forgot">返回登录</a></p>
-                </div>
-            </div>
-            
-            <!-- 用户信息面板 -->
-            <div id="user-info" class="user-info">
-                <div class="avatar">
-                    <i class="fas fa-fairy"></i>
-                </div>
-                <h3 class="username" id="display-name">月光小仙子</h3>
-                <p class="user-email" id="user-email">moonlight@fairy.com</p>
-                
-                <div class="user-stats">
-                    <div class="stat">
-                        <div class="stat-value">248</div>
-                        <div class="stat-label">帖子</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value">1.2K</div>
-                        <div class="stat-label">声望</div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-value">42</div>
-                        <div class="stat-label">粉丝</div>
-                    </div>
-                </div>
-                
-                <button id="logout-btn" class="btn btn-secondary">退出登录 <i class="fas fa-sign-out-alt"></i></button>
-            </div>
-        </div>
-        
+       
         <footer class="footer">
             <p>妖精论坛 &copy; 2023 | 魔法世界的精神家园 | 本论坛仅限魔法生物访问</p>
             <p>遇到技术问题请联系: <a href="mailto:tech@fairyforum.com" style="color:#7ef9ff;">tech@fairyforum.com</a></p>
@@ -546,200 +427,30 @@
     </div>
     
     <script>
-        // Firebase配置 - 实际使用时需要替换为您自己的配置
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
-        };
-        
-        // 初始化Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        
-        // DOM元素
-        const loginForm = document.getElementById('login-form');
-        const registerForm = document.getElementById('register-form');
-        const forgotForm = document.getElementById('forgot-form');
-        const userInfo = document.getElementById('user-info');
-        const messageDiv = document.getElementById('message');
-        
-        // 切换表单显示
-        document.getElementById('show-register').addEventListener('click', (e) => {
-            e.preventDefault();
-            loginForm.style.display = 'none';
-            registerForm.style.display = 'block';
-            forgotForm.style.display = 'none';
-            clearMessage();
-        });
-        
-        document.getElementById('show-login').addEventListener('click', (e) => {
-            e.preventDefault();
-            registerForm.style.display = 'none';
-            loginForm.style.display = 'block';
-            forgotForm.style.display = 'none';
-            clearMessage();
-        });
-        
-        document.getElementById('show-forgot').addEventListener('click', (e) => {
-            e.preventDefault();
-            loginForm.style.display = 'none';
-            registerForm.style.display = 'none';
-            forgotForm.style.display = 'block';
-            clearMessage();
-        });
-        
-        document.getElementById('show-login-from-forgot').addEventListener('click', (e) => {
-            e.preventDefault();
-            forgotForm.style.display = 'none';
-            loginForm.style.display = 'block';
-            clearMessage();
-        });
-        
-        // 登录功能
-        document.getElementById('login-btn').addEventListener('click', () => {
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
+        // 添加简单的动画效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const forumItems = document.querySelectorAll('.forum-item');
             
-            if(!email || !password) {
-                showMessage('请输入邮箱和密码', 'error');
-                return;
-            }
-            
-            auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // 登录成功
-                    showMessage('登录成功！欢迎回来', 'success');
-                    updateUserInfo(userCredential.user);
-                })
-                .catch((error) => {
-                    // 处理错误
-                    showMessage(`登录失败: ${error.message}`, 'error');
+            forumItems.forEach((item, index) => {
+                // 添加延迟动画
+                item.style.animationDelay = `${index * 0.1}s`;
+                
+                // 添加悬停效果
+                item.addEventListener('mouseenter', () => {
+                    item.style.transform = 'translateX(10px)';
                 });
-        });
-        
-        // 注册功能
-        document.getElementById('register-btn').addEventListener('click', () => {
-            const username = document.getElementById('register-username').value;
-            const email = document.getElementById('register-email').value;
-            const password = document.getElementById('register-password').value;
-            const confirmPassword = document.getElementById('register-confirm').value;
-            
-            if(!username || !email || !password || !confirmPassword) {
-                showMessage('请填写所有字段', 'error');
-                return;
-            }
-            
-            if(password !== confirmPassword) {
-                showMessage('两次输入的密码不一致', 'error');
-                return;
-            }
-            
-            if(password.length < 6) {
-                showMessage('密码长度至少为6个字符', 'error');
-                return;
-            }
-            
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    // 注册成功
-                    return userCredential.user.updateProfile({
-                        displayName: username
-                    }).then(() => {
-                        showMessage('注册成功！欢迎加入妖精论坛', 'success');
-                        updateUserInfo(userCredential.user);
-                    });
-                })
-                .catch((error) => {
-                    // 处理错误
-                    showMessage(`注册失败: ${error.message}`, 'error');
+                
+                item.addEventListener('mouseleave', () => {
+                    item.style.transform = 'translateX(0)';
                 });
-        });
-        
-        // 重置密码功能
-        document.getElementById('reset-btn').addEventListener('click', () => {
-            const email = document.getElementById('forgot-email').value;
+            });
             
-            if(!email) {
-                showMessage('请输入邮箱地址', 'error');
-                return;
-            }
-            
-            auth.sendPasswordResetEmail(email)
-                .then(() => {
-                    showMessage('重置链接已发送到您的邮箱，请检查', 'success');
-                })
-                .catch((error) => {
-                    showMessage(`发送失败: ${error.message}`, 'error');
-                });
-        });
-        
-        // 退出登录
-        document.getElementById('logout-btn').addEventListener('click', () => {
-            auth.signOut().then(() => {
-                showMessage('您已成功退出登录', 'success');
-                loginForm.style.display = 'block';
-                registerForm.style.display = 'none';
-                forgotForm.style.display = 'none';
-                userInfo.classList.remove('active');
+            // 背景动画
+            const fairies = document.querySelectorAll('.fairy');
+            fairies.forEach(fairy => {
+                fairy.style.animationDelay = `${Math.random() * 2}s`;
             });
         });
-        
-        // 监听认证状态变化
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                // 用户已登录
-                updateUserInfo(user);
-            } else {
-                // 用户未登录
-                loginForm.style.display = 'block';
-                userInfo.classList.remove('active');
-            }
-        });
-        
-        // 更新用户信息
-        function updateUserInfo(user) {
-            document.getElementById('display-name').textContent = user.displayName || '神秘妖精';
-            document.getElementById('user-email').textContent = user.email;
-            
-            loginForm.style.display = 'none';
-            registerForm.style.display = 'none';
-            forgotForm.style.display = 'none';
-            userInfo.classList.add('active');
-        }
-        
-        // 显示消息
-        function showMessage(text, type) {
-            messageDiv.textContent = text;
-            messageDiv.className = `message ${type}`;
-            messageDiv.style.display = 'block';
-            
-            // 5秒后隐藏消息
-            setTimeout(clearMessage, 5000);
-        }
-        
-        // 清除消息
-        function clearMessage() {
-            messageDiv.style.display = 'none';
-            messageDiv.textContent = '';
-        }
-        
-        // 初始化UI状态
-        function initUI() {
-            // 检查用户是否已登录
-            const user = auth.currentUser;
-            if (user) {
-                updateUserInfo(user);
-            } else {
-                loginForm.style.display = 'block';
-            }
-        }
-        
-        // 页面加载完成后初始化UI
-        window.addEventListener('DOMContentLoaded', initUI);
     </script>
 </body>
 </html>
